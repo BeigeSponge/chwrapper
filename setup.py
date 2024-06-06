@@ -8,10 +8,10 @@ def readme():
 
 setup(
     name="chwrapper",
-    version="0.3.0",
+    version="0.3.1",
     description="A simple wrapper around the Companies House API",
     long_description=readme(),
-    url="http://github.com/jamesgardiner/chwrapper",
+    url="https://github.com/BeigeSponge/chwrapper",
     author="James Gardiner",
     author_email="jamesg87@me.com",
     license="MIT",
