@@ -39,8 +39,8 @@ class RateLimitAdapter(requests.adapters.HTTPAdapter):
             try:
                 timestamp = int(resp.headers["X-Ratelimit-Reset"])
             except KeyError as e:
-                msg = "No X-Ratelimit-Reset Header in response"
-                raise KeyError(msg) from e
+                msg = f"No X-Ratelimit-Reset Header in response. Resp is: {resp}"
+                return resp
 
             reset_dt = datetime.utcfromtimestamp(timestamp)
             td = reset_dt - datetime.utcnow()

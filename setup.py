@@ -8,7 +8,7 @@ def readme():
 
 setup(
     name="chwrapper",
-    version="0.3.1",
+    version="0.3.2",
     description="A simple wrapper around the Companies House API",
     long_description=readme(),
     url="https://github.com/BeigeSponge/chwrapper/archive/development.zip",
