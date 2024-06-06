@@ -76,7 +76,7 @@ class Service(object):
         if rate_limit:
             session.mount(self._BASE_URI, RateLimitAdapter())
 
-        session.params.update(access_token=access_token)
+        # session.params.update(access_token=access_token)
 
         # CH API requires a key only, which is passed as the username
         session.headers.update(
@@ -87,6 +87,7 @@ class Service(object):
             }
         )
         session.auth = (access_token, "")
+        print(session.auth)
         return session
 
     @property

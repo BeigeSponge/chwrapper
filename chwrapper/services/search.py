@@ -44,8 +44,9 @@ class Search(Service):
                 or COMPANIES_HOUSE_KEY environment variables. Defaults to None.
         """
         super(Search, self).__init__()
-        self.session = self.get_session(access_token=access_token,
-                                        rate_limit=rate_limit)
+        self.session = self.get_session(
+            access_token=access_token, rate_limit=rate_limit
+        )
         self._ignore_codes = []
         if rate_limit:
             self._ignore_codes.append(429)
@@ -59,8 +60,8 @@ class Search(Service):
             requests.session.get params keyword.
         """
         params = kwargs
-        params['q'] = term
-        baseuri = self._BASE_URI + 'search/companies'
+        params["q"] = term
+        baseuri = self._BASE_URI + "search/companies"
         res = self.session.get(baseuri, params=params)
         self.handle_http_error(res)
         return res
@@ -75,11 +76,11 @@ class Search(Service):
           kwargs (dict): additional keywords passed into
             requests.session.get params keyword.
         """
-        search_type = ('officers' if not disqualified else
-                       'disqualified-officers')
+        search_type = "officers" if not disqualified else "disqualified-officers"
         params = kwargs
-        params['q'] = term
-        baseuri = self._BASE_URI + 'search/{}'.format(search_type)
+        params["q"] = term
+        print(params)
+        baseuri = self._BASE_URI + "search/{}".format(search_type)
         res = self.session.get(baseuri, params=params)
         self.handle_http_error(res)
         return res
@@ -92,7 +93,7 @@ class Search(Service):
           kwargs (dict): additional keywords passed into
           requests.session.get params keyword.
         """
-        baseuri = self._BASE_URI + 'officers/{}/appointments'.format(num)
+        baseuri = self._BASE_URI + "officers/{}/appointments".format(num)
         res = self.session.get(baseuri, params=kwargs)
         self.handle_http_error(res)
         return res
@@ -191,9 +192,10 @@ class Search(Service):
            kwargs (dict): additional keywords passed into
             requests.session.get *params* keyword.
         """
-        search_type = 'natural' if natural else 'corporate'
-        baseuri = (self._BASE_URI +
-                   'disqualified-officers/{}/{}'.format(search_type, num))
+        search_type = "natural" if natural else "corporate"
+        baseuri = self._BASE_URI + "disqualified-officers/{}/{}".format(
+            search_type, num
+        )
         res = self.session.get(baseuri, params=kwargs)
         self.handle_http_error(res)
         return res
@@ -212,22 +214,19 @@ class Search(Service):
             kwargs (dict): additional keywords passed into requests.session.get
             *params* keyword.
         """
-        baseuri = (self._BASE_URI +
-                   'company/{}/persons-with-significant-control'.format(num))
+        baseuri = self._BASE_URI + "company/{}/persons-with-significant-control".format(
+            num
+        )
 
         # Only append statements to the URL if statements is True
         if statements is True:
-            baseuri += '-statements'
+            baseuri += "-statements"
 
         res = self.session.get(baseuri, params=kwargs)
         self.handle_http_error(res)
         return res
 
-    def significant_control(self,
-                            num,
-                            entity_id,
-                            entity_type='individual',
-                            **kwargs):
+    def significant_control(self, num, entity_id, entity_type="individual", **kwargs):
         """Get details of a specific entity with significant control.
 
         Args:
@@ -242,24 +241,30 @@ class Search(Service):
             *params* keyword.
         """
         # Dict mapping entity_type strings to url strings
-        entities = {'individual': 'individual',
-                    'corporate': 'corporate-entity',
-                    'legal': 'legal-person',
-                    'statements': 'persons-with-significant-control-statements',
-                    'secure': 'super-secure'}
+        entities = {
+            "individual": "individual",
+            "corporate": "corporate-entity",
+            "legal": "legal-person",
+            "statements": "persons-with-significant-control-statements",
+            "secure": "super-secure",
+        }
 
         # Make sure correct entity_type supplied
         try:
             entity = entities[entity_type]
         except KeyError as e:
-            msg = ("Wrong entity_type supplied. Please choose from " +
-                   "individual, corporate, legal, statements or secure")
+            msg = (
+                "Wrong entity_type supplied. Please choose from "
+                + "individual, corporate, legal, statements or secure"
+            )
             raise Exception(msg) from e
 
         # Construct the request and return the result
-        baseuri = (self._BASE_URI +
-                   'company/{}/persons-with-significant-control/'.format(num) +
-                   '{}/{}'.format(entity, entity_id))
+        baseuri = (
+            self._BASE_URI
+            + "company/{}/persons-with-significant-control/".format(num)
+            + "{}/{}".format(entity, entity_id)
+        )
         res = self.session.get(baseuri, params=kwargs)
         self.handle_http_error(res)
         return res
@@ -273,8 +278,7 @@ class Search(Service):
            kwargs (dict): additional keywords passed into
             requests.session.get *params* keyword.
         """
-        baseuri = '{}document/{}/content'.format(self._DOCUMENT_URI,
-                                                 document_id)
+        baseuri = "{}document/{}/content".format(self._DOCUMENT_URI, document_id)
         res = self.session.get(baseuri, params=kwargs)
         self.handle_http_error(res)
         return res
