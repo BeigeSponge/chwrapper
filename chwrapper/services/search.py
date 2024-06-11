@@ -117,6 +117,7 @@ class Search(Service):
           num (str): Company number to search on.
         """
         baseuri = self._BASE_URI + "company/{}".format(num)
+        print(baseuri)
         res = self.session.get(baseuri)
         self.handle_http_error(res)
         return res
